@@ -110,24 +110,10 @@ input{
 
 img{
 	width: 100%;
-	/*height: */
+
 }
 
-/*#icon1,#icon3,#icon5,#icon7,#icon9,#icon11,#icon13,#icon15,#icon17,#icon19,#icon21,#icon23{
-	background-color: grey;
-	margin: 0;
-	padding: 0;
-	height: 5em;
-	width: 1em;
-}
 
-#icon2,#icon4,#icon6,#icon8,#icon10,#icon12,#icon14,#icon16,#icon18,#icon20,#icon22,#icon24{
-	background-color: coral;
-	margin: 0;
-	padding: 0;
-	height: 5em;
-	width: 1em;
-}*/
 
 table{
 	border:1px;
@@ -154,4 +140,4 @@ table caption{
 	color: yellow;
 }
 
-/*end header*/
+

@@ -3,27 +3,19 @@
 $(document).ready(function(){
 
 
-	// Temperature by current location
 
-
-
-	// Temperature by current location
-
-
-	// window.setTimeout(function, milliseconds);
-// var days;
 
 	$("#btn").click(function(){
 		var city_name = $("#cityname").val();
-		// var days = $("#days").val();
+
 		getValue(city_name);
 		$("#label-1,#label-2,#city,#country,#region,#temp,#unit,#update,#current,#icon").css("visibility", "visible");
-		// $("#label-2").css("visibility", "visible");
+
 
 	});
 
 	function getValue(city){
-		// alert(days);
+	
 		$.ajax({
 			url: 'https://api.apixu.com/v1/forecast.json?key=96a1c5e7625acdf56a1c786c63b9e1d9&q='+city+'&days='+1,
 			dataType: 'json',
@@ -38,11 +30,9 @@ $(document).ready(function(){
 
 				$("#update").text(value.current.last_updated);
 
-				// var temp=value.forecast.forecastday[0].day.maxtemp_c;
 				var temp=value.current.temp_c;
 
 
-				// var date=value.forecast.forecastday[0].date;
 				$("#current").html(temp+"&#8451<br>");
 
 				for (var i = 0; i <24; i++) {
@@ -53,7 +43,7 @@ $(document).ready(function(){
 					var text = value.forecast.forecastday[0].hour[i].condition.text;
 					
 					str = str.replace("//", "https://");
-					// $("#icon").attr("src", str);	
+				
 
 					if (i==0)
 					$("#icon1").html("<img src="+str+" alt='icon'>"+text);
