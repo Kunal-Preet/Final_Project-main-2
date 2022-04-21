@@ -1,7 +1,7 @@
 {
-  "name": "my-new-pwa",
-  "short_name": "my-new-pwa",
-  "start_url": "https://evanburg.github.io/pwa-boilerplate/",
+  "name": "Weather-App",
+  "short_name": "Weather-App",
+  "start_url": "https://kunal-preet.github.io/Final_Project-main-2/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fff",
