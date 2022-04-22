@@ -160,7 +160,7 @@ const queryHandler = function() {
     .then(data => data.json())
     .then(data => {
         if (data.error) {
-            blockMain.innerText = "Location could not be found"
+            blockMain.innerText = "Location could not be found. \nPlease enter a valid location in the search bar."
         } else {
             blockMain.innerHTML = "";
             if (option == "current") {
