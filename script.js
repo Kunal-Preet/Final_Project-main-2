@@ -96,9 +96,11 @@ document
 			icon: 'assets/images/icon.png',
 			//image: 'transfer.png',
 			body: city_name
+      
 		  }
 		  const rslt = notify(title, msg);
 		  console.log('Success!', rslt);
+      console.log(city_name)
 		}
 	  }
 	
