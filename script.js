@@ -36,6 +36,7 @@ let weather = {
   },
   search: function () {
     this.fetchWeather(document.querySelector(".search-bar").value);
+    notifyAdvanced()
   },
 };
 
@@ -50,5 +51,53 @@ document
       weather.search();
     }
   });
+
+  const notify = (title, msg) => !msg?.actions ? new Notification(title, msg) : serviceWorkerNotify(title, msg);
+
+	const askPermission = async () => {
+	  // Is Web Notifications available on the browser
+	  if(!("Notification" in window)) {
+		console.error("Notification API is not available on this device!");
+		return false;
+	  }
+	
+	  // Did the user previously allow notifications
+	  if (Notification.permission === 'granted') {
+		return true;
+	  }
+	
+	  // If the user denied or hasn't been asked yet
+	  if (Notification.permission === 'denied' || Notification.permission === 'default') {
+		try {
+		  // Ask for permission
+		  const permission = await Notification.requestPermission();
+		  if (permission === 'granted') {
+			return true;
+		  }
+		  return false;
+		} catch (e) {
+		  console.error("There was an issue acquiring Notification permissions", e);
+		  return false;
+		}
+	  }
+	  return false;
+	}
+
+	const notifyAdvanced = async () => {
+		const permission = await askPermission();
+		if (permission) {
+		  const title = "Showing weather of the following location"
+		  const msg = {
+			badge: "assets/images/icon.png",
+			tag: 'location-request',
+			icon: 'assets/images/icon.png',
+			//image: 'transfer.png',
+			body: city
+		  }
+		  const rslt = notify(title, msg);
+		  console.log('Success!', rslt);
+		}
+	  }
+	
 
 weather.fetchWeather("Denver");
