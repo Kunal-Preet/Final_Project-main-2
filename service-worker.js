@@ -1,51 +1,46 @@
-const version = 1.2;
-const cacheName = `MyCacheName ${version}`;
-const filesToCache = ["offline.html", "assets/images/icon.png", "assets/images/offline.svg", "app.js"];
+const cacheName = 'weather';
+const staticAssets = [
+  './',
+  './index.html',
+  './styles.css',
+  './script.js'
+];
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(cacheName).then(async (cache) => {
-    for (const file of filesToCache) {
-      try {
-        await cache.add(file);
-      } catch(e) {
-        console.error(file, e);
-      }
-    }
-  }));
-  console.log("Service Worker installed...");
+self.addEventListener('install', async e => {
+  const cache = await caches.open(cacheName);
+  await cache.addAll(staticAssets);
+  return self.skipWaiting();
 });
 
-self.addEventListener("fetch", (event) => {
-  console.log(event.request.url, new Date());
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      if (response) return response;
-
-      // Fallback to network and if it fails, return the offline page.
-      return fetch(event.request).catch((error) => {
-        console.log('Network error...', error);
-        console.log('Attempting Offline fallback.');
-        return caches.open(cacheName).then((cache) => {
-          return cache.match("offline.html");
-        });
-      });
-    })
-  );
+self.addEventListener('activate', e => {
+  self.clients.claim();
 });
 
-self.addEventListener("activate", (e) => {
-  console.log("Service Worker: Activate");
-  e.waitUntil(
-    caches.keys().then((keyList) => {
-      return Promise.all(
-        keyList.map((key) => {
-          if (key !== cacheName) {
-            console.log("Service Worker: Removing old cache", key);
-            return caches.delete(key);
-          }
-        })
-      );
-    })
-  );
-  return self.clients.claim();
+self.addEventListener('fetch', async e => {
+  const req = e.request;
+  const url = new URL(req.url);
+
+  if (url.origin === location.origin) {
+    e.respondWith(cacheFirst(req));
+  } else {
+    e.respondWith(networkAndCache(req));
+  }
 });
+
+async function cacheFirst(req) {
+  const cache = await caches.open(cacheName);
+  const cached = await cache.match(req);
+  return cached || fetch(req);
+}
+
+async function networkAndCache(req) {
+  const cache = await caches.open(cacheName);
+  try {
+    const fresh = await fetch(req);
+    await cache.put(req, fresh.clone());
+    return fresh;
+  } catch (e) {
+    const cached = await cache.match(req);
+    return cached;
+  }
+}
