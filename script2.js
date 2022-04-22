@@ -172,6 +172,7 @@ const queryHandler = function() {
             }
         }
     });
+    notifyAdvanced()
 };
 
 const serviceWorkerNotify = async (title, msg) => {
